@@ -1,0 +1,7 @@
+[package]
+name = "rbasic"
+version = "0.1.0"
+authors = ["patrick"]
+edition = "2018"
+
+[dependencies]
