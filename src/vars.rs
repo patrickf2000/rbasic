@@ -146,17 +146,29 @@ pub fn expand_def(value:String, data_type:String, vars:Vec<Var>) -> String {
 	//Divide
 	} else if op == '/' {
 		if data_type == "int" {
-		
+			let no1:i32 = first.parse().unwrap();
+			let no2:i32 = second.parse().unwrap();
+			let answer = no1/no2;
+			ret = answer.to_string();
 		} else if data_type == "dec" {
-		
+			let no1:f32 = first.parse().unwrap();
+			let no2:f32 = second.parse().unwrap();
+			let answer = no1/no2;
+			ret = answer.to_string();
 		}
 		
 	//Modulus
 	} else if op == '%' {
 		if data_type == "int" {
-		
+			let no1:i32 = first.parse().unwrap();
+			let no2:i32 = second.parse().unwrap();
+			let answer = no1%no2;
+			ret = answer.to_string();
 		} else if data_type == "dec" {
-		
+			let no1:f32 = first.parse().unwrap();
+			let no2:f32 = second.parse().unwrap();
+			let answer = no1%no2;
+			ret = answer.to_string();
 		}
 	}
 	
