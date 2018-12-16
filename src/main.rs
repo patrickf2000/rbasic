@@ -6,6 +6,7 @@ use std::io::{BufRead, BufReader};
 mod string_utils;
 mod io;
 mod vars;
+mod loop_utils;
 mod interpreter;
 
 fn main() {
@@ -55,6 +56,8 @@ fn main() {
     	code: 0,
     	labels: labels,
     	vars: Vec::new(),
+    	in_loop: false,
+    	loop_bd: Vec::new(),
     };
     
     for ln in main_lbl.contents.iter() {

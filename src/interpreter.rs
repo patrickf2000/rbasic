@@ -2,6 +2,7 @@ use std::process;
 use super::string_utils;
 use super::io;
 use super::vars;
+use super::loop_utils;
 
 #[derive(Clone)]
 pub struct Lbl {
@@ -12,9 +13,14 @@ pub struct Lbl {
 //This is sent and returned from each label as it runs
 #[derive(Clone)]
 pub struct RunData {
+	//Generic data
 	pub code: i32,
 	pub labels: Vec<Lbl>,
 	pub vars: Vec<vars::Var>,
+	
+	//Loop data
+	pub in_loop: bool,
+	pub loop_bd: Vec<String>,
 }
 
 //Builds a blank data label
@@ -23,6 +29,8 @@ pub fn build_data() -> RunData {
 		code: 0,
 		labels: Vec::new(),
 		vars: Vec::new(),
+		in_loop: false,
+		loop_bd: Vec::new(),
 	};
 	
 	data
@@ -98,6 +106,12 @@ pub fn run(line:String, mut data:RunData) -> RunData {
 	let second = string_utils::get_second(&line);
 	let mut ret_code:i32 = 0;
 	
+	//Make sure we are not in a loop
+	if data.in_loop && first != "WHILE" {
+		data.loop_bd.push(line.clone());
+		return data.clone();
+	}
+	
 	//The PRINTLN command
 	if first == "PRINTLN" {
 		io::println(second.clone(), data.vars.clone());
@@ -149,6 +163,14 @@ pub fn run(line:String, mut data:RunData) -> RunData {
 	//This simply exits the program
 	} else if first == "EXIT" {
 		process::exit(0);
+		
+	//The DO command-> Starts a do-while loop
+	} else if first == "DO" {
+		data.in_loop = true;
+		
+	//The WHILE command-> Ends a do-while loop
+	} else if first == "WHILE" {
+		data = loop_utils::run_while_loop(second.clone(), data.clone());
 	
 	} else {
 		let fc = first.chars().nth(0).unwrap();
