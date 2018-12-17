@@ -1,6 +1,6 @@
 use std::process;
 use super::string_utils;
-use super::io;
+use super::io_cmd;
 use super::vars;
 use super::loop_utils;
 
@@ -114,7 +114,7 @@ pub fn run(line:String, mut data:RunData) -> RunData {
 	
 	//The PRINTLN command
 	if first == "PRINTLN" {
-		io::println(second.clone(), data.vars.clone());
+		io_cmd::println(second.clone(), data.vars.clone());
 		
 	//The LET command
 	//This defines variables

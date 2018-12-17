@@ -1,22 +1,57 @@
 use std::env;
 use std::process;
 use std::fs::File;
+use std::io;
 use std::io::{BufRead, BufReader};
+use std::io::Write;
 
 mod string_utils;
-mod io;
+mod io_cmd;
 mod vars;
 mod loop_utils;
 mod interpreter;
 
+//Our main function
 fn main() {
     let args:Vec<String> = env::args().collect();
     
     if args.len() == 1 {
-    	println!("Error: You must specify a file.");
-    	process::exit(1);
+    	shell_mode();
+    } else {
+    	file_mode(args);
     }
-    
+}
+
+//Runs from a command shell
+fn shell_mode() {
+	println!("Welcome to rBasic v1.0");
+	println!("You are in shell mode.");
+	println!("");
+
+	let mut data = interpreter::build_data();
+	
+	loop {
+		print!("BAS> ");
+		io::stdout().flush().unwrap();
+		
+		let mut input = String::new();
+		io::stdin().read_line(&mut input).expect("Unknown input");
+		input = input.trim().to_string();
+		
+		if input == "EXIT" {
+			process::exit(0);
+		} else if input.len() == 0 {
+			continue;
+		} else if string_utils::get_first(&input) == "REM" {
+			continue;
+		}
+		
+		data = interpreter::run(input, data.clone());
+	}
+}
+
+//Runs from a file
+fn file_mode(args:Vec<String>) {
     let path = args.iter().nth(1).unwrap().to_string();
     let mut contents:Vec<String> = Vec::new();
     
@@ -52,13 +87,7 @@ fn main() {
     	}
     }
     
-    let mut data = interpreter::RunData {
-    	code: 0,
-    	labels: labels,
-    	vars: Vec::new(),
-    	in_loop: false,
-    	loop_bd: Vec::new(),
-    };
+    let mut data = interpreter::build_data();
     
     for ln in main_lbl.contents.iter() {
     	data = interpreter::run(ln.clone(), data.clone());
