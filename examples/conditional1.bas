@@ -12,9 +12,12 @@ MAIN:
 	
 	println result
 	
-	goto cmp_double
+	gosub cmp_double
+	gosub cmp_str
+	exit
 	
 cmp_double:
+	println " "
 	println "Cmp double"
 	
 	let .x = 4.6
@@ -27,3 +30,16 @@ cmp_double:
 	
 	if [x == y] then println "They are equal!"
 	elif [x != y] then println "They are not equal."
+	
+cmp_str:
+	println " "
+	println "Cmp Strings"
+	
+	let $str1 = "Hello"
+	let $str2 = "Hello!!"
+	
+	if [str1 == str2] then println "The strings are equal."
+	else println "The strings are not equal."
+	
+	if [str1 > str2] then println "Test failed"
+	else println "Yahoo!!"

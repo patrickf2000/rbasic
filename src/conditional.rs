@@ -1,3 +1,5 @@
+use std::process;
+
 use super::string_utils;
 use super::utils;
 use super::interpreter;
@@ -72,8 +74,25 @@ pub fn check_conditional(second:String, mut data:RunData) -> RunData {
 		
 	//String datatypes
 	} else {
-	
+		if compare_strings(&var1, &var2, &condition.operator) {
+			data = interpreter::run(result,data.clone());
+			data.if_solved = true;
+		}
 	}
 
 	data.clone()
+}
+
+//Compares two strings
+pub fn compare_strings(str1:&String, str2:&String, op:&String) -> bool {
+	if op != "==" && op != "!=" {
+		println!("Error: Only the \'==\' and the \'!=\' are valid for use with strings.");
+		process::exit(1);
+	}
+	
+	if str1 == str2 {
+		return true;
+	}
+	
+	false
 }
