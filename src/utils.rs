@@ -1,3 +1,5 @@
+use super::interpreter::RunData;
+
 #[derive(Clone)]
 pub struct Condition {
 	pub part1:String,
@@ -90,5 +92,18 @@ pub fn is_double(_no1:String, _no2:String) -> bool {
 	}
 	
 	false
+}
+
+//Handles return commands
+pub fn handle_return(line:String, mut data:RunData) -> RunData {
+	data.memory = line.clone();
+	
+	for v in data.vars.iter() {
+		if v.name == line {
+			data.memory = v.value.clone();
+		}
+	}
+
+	data.clone()
 }
 

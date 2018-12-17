@@ -4,6 +4,7 @@ use super::io_cmd;
 use super::vars;
 use super::loop_utils;
 use super::conditional;
+use super::utils;
 
 #[derive(Clone)]
 pub struct Lbl {
@@ -27,6 +28,9 @@ pub struct RunData {
 	//Data for conditional statements
 	pub last_was_if: bool,
 	pub if_solved: bool,
+	
+	//Memory control
+	pub memory: String,
 }
 
 //Builds a blank data label
@@ -40,6 +44,7 @@ pub fn build_data() -> RunData {
 		loop_bd: Vec::new(),
 		last_was_if: false,
 		if_solved: false,
+		memory: String::new(),
 	};
 	
 	data
@@ -172,6 +177,8 @@ pub fn run(line:String, mut data:RunData) -> RunData {
 			}
 		}
 		
+		data.memory = sub_data.memory.clone();
+		
 	//The GOTO command
 	//This command goes to another function and stops the current function
 	} else if first == "GOTO" {
@@ -200,7 +207,11 @@ pub fn run(line:String, mut data:RunData) -> RunData {
 			println!("RETURN is not valid for use in shell mode.");
 			return data;
 		}
-		//TODO: Implement
+		data = utils::handle_return(second.clone(), data.clone());
+		
+	//The MEMSET command
+	} else if first == "MEMSET" {
+		data.vars = vars::def_var(second.clone(), data.memory.clone(), data.vars.clone());
 		
 	//The EXIT command
 	//This simply exits the program
