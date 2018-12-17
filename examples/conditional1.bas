@@ -2,8 +2,8 @@ REM conditional1.bas
 REM Tests conditionals
 
 MAIN:
-	let #x = 10
-	let #y = 1
+	let #x = 1
+	let #y = 10
 	let $result = "Don't know"
 	
 	if [x > y] then $result = "Greater"
