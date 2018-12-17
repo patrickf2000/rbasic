@@ -24,8 +24,9 @@ pub struct RunData {
 	pub in_loop: bool,
 	pub loop_bd: Vec<String>,
 	
-	//Other data
+	//Data for conditional statements
 	pub last_was_if: bool,
+	pub if_solved: bool,
 }
 
 //Builds a blank data label
@@ -38,6 +39,7 @@ pub fn build_data() -> RunData {
 		in_loop: false,
 		loop_bd: Vec::new(),
 		last_was_if: false,
+		if_solved: false,
 	};
 	
 	data
@@ -122,6 +124,7 @@ pub fn run(line:String, mut data:RunData) -> RunData {
 	//Make a quick conditional control check
 	if (first != "ELIF" && first != "ELSE") && data.last_was_if {
 		data.last_was_if = false;
+		data.if_solved = false;
 	}
 	
 	//Make sure we are not in a loop
@@ -212,9 +215,29 @@ pub fn run(line:String, mut data:RunData) -> RunData {
 	//The ELIF command-> Second part of a conditional
 	} else if first == "ELIF" {
 		if data.last_was_if {
-			data = conditional::check_conditional(second.clone(), data.clone());
+			if data.if_solved {
+				return data;
+			} else {
+				data = conditional::check_conditional(second.clone(), data.clone());
+				data.last_was_if = true;
+			}
 		} else {
 			println!("Error: You cannot have \"ELIF\" without a previous IF.");
+			process::exit(1);
+		}
+		
+	//The ELSE command
+	} else if first == "ELSE" {
+		if data.last_was_if {
+			if data.if_solved {
+				return data;
+			} else {
+				data = run(second.clone(), data.clone());
+				data.last_was_if = false;
+				data.if_solved = false;
+			}
+		} else {
+			println!("Error: You cannot have \"ELSE\" without a previous IF.");
 			process::exit(1);
 		}
 		

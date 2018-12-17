@@ -56,6 +56,7 @@ pub fn check_conditional(second:String, mut data:RunData) -> RunData {
 		
 		if utils::compare_ints(no1,no2,&condition.operator) {
 			data = interpreter::run(result,data.clone());
+			data.if_solved = true;
 		}
 	} else if utils::is_double(var1.clone(), var2.clone()) {
 	
