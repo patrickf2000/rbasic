@@ -38,11 +38,11 @@ fn shell_mode() {
 		io::stdin().read_line(&mut input).expect("Unknown input");
 		input = input.trim().to_string();
 		
-		if input == "EXIT" {
+		if input.to_uppercase() == "EXIT" {
 			process::exit(0);
 		} else if input.len() == 0 {
 			continue;
-		} else if string_utils::get_first(&input) == "REM" {
+		} else if string_utils::get_first(&input).to_uppercase() == "REM" {
 			continue;
 		}
 		

@@ -102,9 +102,14 @@ pub fn find_label(labels:Vec<Lbl>, name:String) -> Lbl {
 
 //The main interpreter-> Interprets the individual layers
 pub fn run(line:String, mut data:RunData) -> RunData {
-	let first = string_utils::get_first(&line);
+	let mut first = string_utils::get_first(&line);
 	let second = string_utils::get_second(&line);
 	let mut ret_code:i32 = 0;
+	
+	let fc = first.chars().nth(0).unwrap();
+	if fc != '#' && fc != '.' && fc != '$' {
+		first = first.to_uppercase();
+	}
 	
 	//Make sure we are not in a loop
 	if data.in_loop && first != "WHILE" {
