@@ -29,6 +29,7 @@ fn shell_mode() {
 	println!("");
 
 	let mut data = interpreter::build_data();
+	data.shell_mode = true;
 	
 	loop {
 		print!("BAS> ");
@@ -88,6 +89,7 @@ fn file_mode(args:Vec<String>) {
     }
     
     let mut data = interpreter::build_data();
+    data.labels = labels;
     
     for ln in main_lbl.contents.iter() {
     	data = interpreter::run(ln.clone(), data.clone());

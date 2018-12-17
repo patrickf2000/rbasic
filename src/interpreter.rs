@@ -17,6 +17,7 @@ pub struct RunData {
 	pub code: i32,
 	pub labels: Vec<Lbl>,
 	pub vars: Vec<vars::Var>,
+	pub shell_mode: bool,
 	
 	//Loop data
 	pub in_loop: bool,
@@ -29,6 +30,7 @@ pub fn build_data() -> RunData {
 		code: 0,
 		labels: Vec::new(),
 		vars: Vec::new(),
+		shell_mode: false,
 		in_loop: false,
 		loop_bd: Vec::new(),
 	};
@@ -107,7 +109,8 @@ pub fn run(line:String, mut data:RunData) -> RunData {
 	let mut ret_code:i32 = 0;
 	
 	let fc = first.chars().nth(0).unwrap();
-	if fc != '#' && fc != '.' && fc != '$' {
+	let lc = first.chars().last().unwrap();
+	if fc != '#' && fc != '.' && fc != '$' && lc != ':' {
 		first = first.to_uppercase();
 	}
 	
@@ -130,10 +133,15 @@ pub fn run(line:String, mut data:RunData) -> RunData {
 	//The GOSUB command
 	//This command executes another function and returns from it
 	} else if first == "GOSUB" {
+		if data.shell_mode {
+			println!("GOSUB is not valid for use in shell mode.");
+			return data;
+		}
+		
 		let lbl = find_label(data.labels.clone(), second);
 		let mut sub_data = build_data();
 		sub_data.labels = data.labels.clone();
-			
+		
 		for ln in lbl.contents.iter() {
 			sub_data = run(ln.clone() ,sub_data.clone());
 			
@@ -146,6 +154,11 @@ pub fn run(line:String, mut data:RunData) -> RunData {
 	//The GOTO command
 	//This command goes to another function and stops the current function
 	} else if first == "GOTO" {
+		if data.shell_mode {
+			println!("GOTO is not valid for use in shell mode.");
+			return data;
+		}
+	
 		let lbl = find_label(data.labels.clone(), second);
 		
 		for ln in lbl.contents.iter() {
@@ -162,6 +175,10 @@ pub fn run(line:String, mut data:RunData) -> RunData {
 		
 	//The RETURN command
 	} else if first == "RETURN" {
+		if data.shell_mode {
+			println!("RETURN is not valid for use in shell mode.");
+			return data;
+		}
 		//TODO: Implement
 		
 	//The EXIT command
