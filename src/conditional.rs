@@ -50,6 +50,7 @@ pub fn check_conditional(second:String, mut data:RunData) -> RunData {
 	}
 		
 	//3) Get the datatype and compare
+	//Integer datatypes
 	if utils::is_int(var1.clone(), var2.clone()) {
 		let no1 = var1.parse::<i32>().unwrap();
 		let no2 = var2.parse::<i32>().unwrap();
@@ -58,8 +59,18 @@ pub fn check_conditional(second:String, mut data:RunData) -> RunData {
 			data = interpreter::run(result,data.clone());
 			data.if_solved = true;
 		}
+		
+	//Floating-point datatypes
 	} else if utils::is_double(var1.clone(), var2.clone()) {
-	
+		let no1 = var1.parse::<f32>().unwrap();
+		let no2 = var2.parse::<f32>().unwrap();
+		
+		if utils::compare_doubles(no1,no2,&condition.operator) {
+			data = interpreter::run(result,data.clone());
+			data.if_solved = true;
+		}
+		
+	//String datatypes
 	} else {
 	
 	}

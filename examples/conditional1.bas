@@ -11,3 +11,19 @@ MAIN:
 	else $result = "Maybe they are equal!"
 	
 	println result
+	
+	goto cmp_double
+	
+cmp_double:
+	println "Cmp double"
+	
+	let .x = 4.6
+	let .y = 4.5
+	
+	if [x > y] then println "Greater"
+	elif [x < y] then println "Less"
+	else println "They are equal!"
+	
+	
+	if [x == y] then println "They are equal!"
+	elif [x != y] then println "They are not equal."

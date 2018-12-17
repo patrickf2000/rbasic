@@ -172,11 +172,11 @@ pub fn run(line:String, mut data:RunData) -> RunData {
 			return data;
 		}
 	
+		let mut sub_data = build_data();
+		sub_data.labels = data.labels.clone();
 		let lbl = find_label(data.labels.clone(), second);
 		
 		for ln in lbl.contents.iter() {
-			let mut sub_data = build_data();
-			sub_data.labels = data.labels.clone();
 			sub_data = run(ln.clone() ,sub_data.clone());
 			
 			if sub_data.code == 1 {

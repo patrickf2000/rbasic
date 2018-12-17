@@ -72,6 +72,23 @@ pub fn is_int(_no1:String, _no2:String) -> bool {
 
 //Checks to see if two numbers are doubles
 pub fn is_double(_no1:String, _no2:String) -> bool {
+	let no1_is:bool;
+	let no2_is:bool;
+	
+	match _no1.parse::<f32>() {
+		Ok(_n) => no1_is = true,
+		Err(_n) => no1_is = false,
+	}
+	
+	match _no2.parse::<f32>() {
+		Ok(_n) => no2_is = true,
+		Err(_n) => no2_is = false,
+	}
+	
+	if no1_is && no2_is {
+		return true;
+	}
+	
 	false
 }
 
@@ -94,5 +111,29 @@ pub fn compare_ints(no1:i32, no2:i32, operator:&String) -> bool {
 			return true;
 		}
 	}
+	
+	false
+}
+
+//Compare two double variables
+pub fn compare_doubles(no1:f32, no2:f32, operator:&String) -> bool {
+	if operator == "==" {
+		if no1 == no2 {
+			return true;
+		}
+	} else if operator == "!=" {
+		if no1 != no2 {
+			return true;
+		}
+	} else if operator == ">" {
+		if no1 > no2 {
+			return true;
+		}
+	} else if operator == "<" {
+		if no1 < no2 {
+			return true;
+		}
+	}
+	
 	false
 }
