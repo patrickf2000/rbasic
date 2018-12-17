@@ -1,12 +1,13 @@
 //ios.rs
 //Handles the Input/output commands
 use std::io;
+use std::io::Write;
 
 use super::vars;
 use super::string_utils;
 
 //The PRINTLN command
-pub fn println(line:String, vars:Vec<vars::Var>) {
+pub fn print(line:String, vars:Vec<vars::Var>, nl:bool) {
 	let fc = line.chars().nth(0).unwrap();
 	let lc = line.chars().last().unwrap();
 	let mut to_print = String::new();
@@ -26,7 +27,13 @@ pub fn println(line:String, vars:Vec<vars::Var>) {
 	}
 	
 	//Print out our text
-	println!("{}",to_print);
+	if nl {
+		println!("{}",to_print);
+	} else {
+		print!("{}",to_print);
+	}
+	
+	io::stdout().flush().unwrap();
 }
 
 //The INPUT command

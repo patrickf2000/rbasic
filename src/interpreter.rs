@@ -135,7 +135,11 @@ pub fn run(line:String, mut data:RunData) -> RunData {
 	
 	//The PRINTLN command
 	if first == "PRINTLN" {
-		io_cmd::println(second.clone(), data.vars.clone());
+		io_cmd::print(second.clone(), data.vars.clone(), true);
+		
+	//The PRINT command
+	} else if first == "PRINT" {
+		io_cmd::print(second.clone(), data.vars.clone(), false);
 		
 	//The INPUT command
 	} else if first == "INPUT" {
