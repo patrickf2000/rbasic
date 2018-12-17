@@ -1,37 +1,15 @@
 use std::process;
 use super::interpreter;
 use super::interpreter::RunData;
+use super::utils;
 
 pub fn run_while_loop(second:String, mut data:RunData) -> RunData {
 	data.in_loop = false;
 		
-	let mut var = String::new();
-	let mut op = String::new();
-	let mut index = String::new();
-	let mut found_first = false;
-	let mut found_op = false;
-	
-	for c in second.chars() {
-		if c == '<' || c == '>' || c == '=' || c == '!' {
-			if !found_op {
-				op.push(c);
-				if !found_first {
-					found_first = true;
-				}
-			}
-		} else if c == ' ' {
-			continue;
-		} else {
-			if found_first {
-				if !found_op {
-					found_op = true;
-				}
-				index.push(c);
-			} else {
-				var.push(c);
-			}
-		}
-	}
+	let condition = utils::get_condition(&second);
+	let var = condition.part1;
+	let op = condition.operator;
+	let index = condition.part2;	
 	
 	let mut sub_data = interpreter::build_data();
 	sub_data.labels = data.labels.clone();

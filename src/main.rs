@@ -8,6 +8,7 @@ use std::io::Write;
 mod string_utils;
 mod io_cmd;
 mod vars;
+mod utils;
 mod loop_utils;
 mod interpreter;
 
