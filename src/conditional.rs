@@ -57,7 +57,7 @@ pub fn check_conditional(second:String, mut data:RunData) -> RunData {
 		let no1 = var1.parse::<i32>().unwrap();
 		let no2 = var2.parse::<i32>().unwrap();
 		
-		if utils::compare_ints(no1,no2,&condition.operator) {
+		if compare_ints(no1,no2,&condition.operator) {
 			data = interpreter::run(result,data.clone());
 			data.if_solved = true;
 		}
@@ -67,7 +67,7 @@ pub fn check_conditional(second:String, mut data:RunData) -> RunData {
 		let no1 = var1.parse::<f32>().unwrap();
 		let no2 = var2.parse::<f32>().unwrap();
 		
-		if utils::compare_doubles(no1,no2,&condition.operator) {
+		if compare_doubles(no1,no2,&condition.operator) {
 			data = interpreter::run(result,data.clone());
 			data.if_solved = true;
 		}
@@ -81,6 +81,52 @@ pub fn check_conditional(second:String, mut data:RunData) -> RunData {
 	}
 
 	data.clone()
+}
+
+//Compares two integer variables
+pub fn compare_ints(no1:i32, no2:i32, operator:&String) -> bool {
+	if operator == "==" {
+		if no1 == no2 {
+			return true;
+		}
+	} else if operator == "!=" {
+		if no1 != no2 {
+			return true;
+		}
+	} else if operator == ">" {
+		if no1 > no2 {
+			return true;
+		}
+	} else if operator == "<" {
+		if no1 < no2 {
+			return true;
+		}
+	}
+	
+	false
+}
+
+//Compare two double variables
+pub fn compare_doubles(no1:f32, no2:f32, operator:&String) -> bool {
+	if operator == "==" {
+		if no1 == no2 {
+			return true;
+		}
+	} else if operator == "!=" {
+		if no1 != no2 {
+			return true;
+		}
+	} else if operator == ">" {
+		if no1 > no2 {
+			return true;
+		}
+	} else if operator == "<" {
+		if no1 < no2 {
+			return true;
+		}
+	}
+	
+	false
 }
 
 //Compares two strings
