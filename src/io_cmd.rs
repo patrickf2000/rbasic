@@ -1,5 +1,7 @@
 //ios.rs
 //Handles the Input/output commands
+use std::io;
+
 use super::vars;
 use super::string_utils;
 
@@ -25,4 +27,29 @@ pub fn println(line:String, vars:Vec<vars::Var>) {
 	
 	//Print out our text
 	println!("{}",to_print);
+}
+
+//The INPUT command
+pub fn input(line:String, vars:Vec<vars::Var>) -> Vec<vars::Var> {
+	let mut vrs:Vec<vars::Var> = Vec::new();
+
+	let mut input = String::new();
+	io::stdin().read_line(&mut input).expect("Unknown input");
+	input = input.trim().to_string();
+
+	for v in vars.iter() {
+		if v.name == line {
+			let vn = vars::Var {
+				name: v.name.clone(),
+				value: input.clone(),
+				data_type: v.data_type.clone(),
+			};
+			
+			vrs.push(vn.clone());
+		} else {
+			vrs.push(v.clone());
+		}
+	}
+
+	vrs
 }
