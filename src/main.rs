@@ -10,6 +10,7 @@ mod io_cmd;
 mod vars;
 mod utils;
 mod loop_utils;
+mod conditional;
 mod interpreter;
 
 //Our main function
