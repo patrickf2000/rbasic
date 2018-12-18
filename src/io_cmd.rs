@@ -45,24 +45,28 @@ pub fn print(line:String, mut data:RunData, nl:bool) -> RunData {
 }
 
 //The INPUT command
-pub fn input(line:String, vars:Vec<vars::Var>) -> Vec<vars::Var> {
+pub fn input(line:String, vars:Vec<vars::Var>, data:&mut RunData) -> Vec<vars::Var> {
 	let mut vrs:Vec<vars::Var> = Vec::new();
 
 	let mut input = String::new();
 	io::stdin().read_line(&mut input).expect("Unknown input");
 	input = input.trim().to_string();
-
-	for v in vars.iter() {
-		if v.name == line {
-			let vn = vars::Var {
-				name: v.name.clone(),
-				value: input.clone(),
-				data_type: v.data_type.clone(),
-			};
-			
-			vrs.push(vn.clone());
-		} else {
-			vrs.push(v.clone());
+	
+	if line.len() == 0 {
+		data.memory = input;
+	} else {
+		for v in vars.iter() {
+			if v.name == line {
+				let vn = vars::Var {
+					name: v.name.clone(),
+					value: input.clone(),
+					data_type: v.data_type.clone(),
+				};
+				
+				vrs.push(vn.clone());
+			} else {
+				vrs.push(v.clone());
+			}
 		}
 	}
 

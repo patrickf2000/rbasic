@@ -169,7 +169,7 @@ pub fn run(line:String, mut data:RunData) -> RunData {
 		
 	//The INPUT command
 	} else if first == "INPUT" {
-		data.vars = io_cmd::input(second.clone(), data.vars.clone());
+		data.vars = io_cmd::input(second.clone(), data.vars.clone(), &mut data);
 		
 	//The LET command
 	//This defines variables
