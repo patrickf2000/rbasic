@@ -86,13 +86,13 @@ println result
 ### Operators
 The following mathematical operators are supported:   
 * +		-> Addition   
-* -		-> Subtraction   
+* \-	-> Subtraction   
 * *		-> Multiplication   
 * /		-> Division   
 * %		-> Modulus   
 
 The following logical operators are supported:   
 * >		-> Greater than   
-* <		-> Less than   
+* \<	\-> Less than   
 * ==	-> Equal to   
 * !=	-> Not equal to   
