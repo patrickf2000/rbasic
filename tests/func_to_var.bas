@@ -6,7 +6,12 @@ MAIN:
 	print "Enter a number: "
 	input x
 	
-	println (gosub double[x])
+	let #result = (gosub double[x])
+	println result
+	
+	let #result2 = 0
+	#result2 = (gosub double[result])
+	println result2
 
 double[#x]:
 	let #no = x * 2

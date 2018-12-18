@@ -174,7 +174,7 @@ pub fn run(line:String, mut data:RunData) -> RunData {
 	//The LET command
 	//This defines variables
 	} else if first == "LET" {
-		let var = vars::create_var(second.clone(), data.vars.clone());
+		let var = vars::create_var(second.clone(), data.vars.clone(), &mut data);
 		data.vars.push(var);
 		
 	//The GOSUB command
@@ -189,7 +189,7 @@ pub fn run(line:String, mut data:RunData) -> RunData {
 		sub_data.labels = data.labels.clone();
 		
 		let mut lbl = find_label(data.labels.clone(), second.clone());
-		lbl.args = lbl_utils::assign_args(lbl.clone(), &second, &data.vars);
+		lbl.args = lbl_utils::assign_args(lbl.clone(), &second, &mut data);
 		sub_data.vars = vars::merge_vars(lbl.args.clone(), sub_data.vars.clone());
 		
 		for ln in lbl.contents.iter() {
@@ -215,7 +215,7 @@ pub fn run(line:String, mut data:RunData) -> RunData {
 		sub_data.labels = data.labels.clone();
 		
 		let mut lbl = find_label(data.labels.clone(), second.clone());
-		lbl.args = lbl_utils::assign_args(lbl.clone(), &second, &data.vars);
+		lbl.args = lbl_utils::assign_args(lbl.clone(), &second, &mut data);
 		sub_data.vars = vars::merge_vars(lbl.args.clone(), sub_data.vars.clone());
 		
 		for ln in lbl.contents.iter() {
@@ -238,7 +238,7 @@ pub fn run(line:String, mut data:RunData) -> RunData {
 		
 	//The MEMSET command
 	} else if first == "MEMSET" {
-		data.vars = vars::def_var(second.clone(), data.memory.clone(), data.vars.clone());
+		data.vars = vars::def_var(second.clone(), data.memory.clone(), data.vars.clone(), &mut data);
 		
 	//The EXIT command
 	//This simply exits the program
@@ -295,7 +295,7 @@ pub fn run(line:String, mut data:RunData) -> RunData {
 		if fc == '#' || fc == '.' || fc == '$' {
 			let vname = vars::var_name(&first);
 			let sec = string_utils::get_second(&second);
-			data.vars = vars::def_var(vname, sec, data.vars.clone());
+			data.vars = vars::def_var(vname, sec, data.vars.clone(), &mut data);
 		
 		//Unknown command
 		} else {

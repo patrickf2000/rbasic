@@ -2,6 +2,7 @@ use std::process;
 use super::vars;
 use super::vars::Var;
 use super::interpreter::Lbl;
+use super::interpreter::RunData;
 
 //Returns a list of arguments from a function name
 pub fn args_list(name:&String) -> Vec<String> {
@@ -75,7 +76,7 @@ pub fn build_args(name:&String) -> Vec<Var> {
 }
 
 //Assigns argument values for a label
-pub fn assign_args(label:Lbl, name:&String, parent_vars:&Vec<Var>) -> Vec<Var> {
+pub fn assign_args(label:Lbl, name:&String, mut data:&mut RunData) -> Vec<Var> {
 	let mut vars:Vec<Var> = label.args.clone();
 	let args_obj = args_list(&name);
 	
@@ -90,14 +91,14 @@ pub fn assign_args(label:Lbl, name:&String, parent_vars:&Vec<Var>) -> Vec<Var> {
 	let mut index = 0;
 	while index < v_len {
 		let mut value = args_obj.iter().nth(index).unwrap().to_string();
-		for vr in parent_vars.iter() {
+		for vr in data.vars.iter() {
 			if vr.name == value {
 				value = vr.value.clone();
 			}
 		}
 	
 		let v = vars.iter().nth(index).unwrap();
-		vars = vars::def_var(v.name.clone(), value, vars.clone());
+		vars = vars::def_var(v.name.clone(), value, vars.clone(), &mut data);
 		
 		index += 1;
 	}

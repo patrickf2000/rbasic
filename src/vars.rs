@@ -1,4 +1,7 @@
 use super::string_utils;
+use super::utils;
+use super::interpreter;
+use super::interpreter::RunData;
 
 /* Our var structure
 Possible data types:
@@ -185,7 +188,7 @@ pub fn expand_def(value:String, data_type:String, vars:Vec<Var>) -> String {
 }
 
 //Defines a variable from a string
-pub fn def_var(name:String, value:String, vars:Vec<Var>) -> Vec<Var> {
+pub fn def_var(name:String, value:String, vars:Vec<Var>, mut data:&mut RunData) -> Vec<Var> {
 	let mut vrs:Vec<Var> = Vec::new();
 	
 	for v in vars.iter() {
@@ -196,7 +199,14 @@ pub fn def_var(name:String, value:String, vars:Vec<Var>) -> Vec<Var> {
 				data_type: v.data_type.clone(),
 			};
 			
-			vn.value = expand_def(value.clone(), vn.data_type.clone(), vars.clone());
+			if utils::is_cmd(value.clone()) {
+				let cmd = string_utils::get_cmd(&value);
+				let sub_data = interpreter::run(cmd, data.clone());
+				vn.value = sub_data.memory.clone();
+				data.memory = sub_data.memory.clone();
+			} else {
+				vn.value = expand_def(value.clone(), vn.data_type.clone(), vars.clone());
+			}
 			
 			vrs.push(vn);
 		} else {
@@ -208,7 +218,7 @@ pub fn def_var(name:String, value:String, vars:Vec<Var>) -> Vec<Var> {
 }
 
 //Creates a var from a line of text
-pub fn create_var(line:String, vars:Vec<Var>) -> Var {
+pub fn create_var(line:String, vars:Vec<Var>, data:&mut RunData) -> Var {
 	let mut v = Var {
 		name: "".to_string(),
 		value: "".to_string(),
@@ -233,7 +243,14 @@ pub fn create_var(line:String, vars:Vec<Var>) -> Var {
 	let s1 = string_utils::get_second(&line);
 	let second = string_utils::get_second(&s1);
 	
-	v.value = expand_def(second, v.data_type.clone() ,vars.clone());
+	if utils::is_cmd(second.clone()) {
+		let cmd = string_utils::get_cmd(&second);
+		let sub_data = interpreter::run(cmd, data.clone());
+		v.value = sub_data.memory.clone();
+		data.memory = sub_data.memory.clone();
+	} else {
+		v.value = expand_def(second.clone(), v.data_type.clone(), vars.clone());
+	}
 	
 	v
 }
