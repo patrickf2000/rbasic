@@ -92,7 +92,7 @@ The following mathematical operators are supported:
 * %		-> Modulus   
 
 The following logical operators are supported:   
-* >		-> Greater than   
+* \>		-> Greater than   
 * \<	\-> Less than   
 * ==	-> Equal to   
 * !=	-> Not equal to   
