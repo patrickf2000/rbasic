@@ -85,6 +85,5 @@ pub fn run_while_loop(second:String, mut data:RunData) -> RunData {
 		}
 	}
 		
-	//data
 	sub_data
 }

@@ -135,10 +135,6 @@ pub fn run(line:String, mut data:RunData) -> RunData {
 	}
 	
 	//Make sure we are not in a loop
-	/*if data.in_loop && data.lp_layer >= 1 && first != "WHILE" {
-		data.loop_bd.push(line.clone());
-		return data.clone();
-	}*/
 	if data.in_loop {
 		if first == "DO" {
 			data.lp_layer += 1;
