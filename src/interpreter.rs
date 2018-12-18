@@ -24,6 +24,7 @@ pub struct RunData {
 	//Loop data
 	pub in_loop: bool,
 	pub loop_bd: Vec<String>,
+	pub lp_layer: i32,
 	
 	//Data for conditional statements
 	pub last_was_if: bool,
@@ -42,6 +43,7 @@ pub fn build_data() -> RunData {
 		shell_mode: false,
 		in_loop: false,
 		loop_bd: Vec::new(),
+		lp_layer: 0,
 		last_was_if: false,
 		if_solved: false,
 		memory: String::new(),
@@ -133,9 +135,23 @@ pub fn run(line:String, mut data:RunData) -> RunData {
 	}
 	
 	//Make sure we are not in a loop
-	if data.in_loop && first != "WHILE" {
+	/*if data.in_loop && data.lp_layer >= 1 && first != "WHILE" {
 		data.loop_bd.push(line.clone());
 		return data.clone();
+	}*/
+	if data.in_loop {
+		if first == "DO" {
+			data.lp_layer += 1;
+			data.loop_bd.push(line.clone());
+			return data.clone();
+		} else if first == "WHILE" && data.lp_layer > 1 {
+			data.loop_bd.push(line.clone());
+			data.lp_layer -= 1;
+			return data.clone();
+		} else if first != "WHILE" {
+			data.loop_bd.push(line.clone());
+			return data.clone();
+		}
 	}
 	
 	//The PRINTLN command
@@ -221,6 +237,7 @@ pub fn run(line:String, mut data:RunData) -> RunData {
 	//The DO command-> Starts a do-while loop
 	} else if first == "DO" {
 		data.in_loop = true;
+		data.lp_layer += 1;
 		
 	//The WHILE command-> Ends a do-while loop
 	} else if first == "WHILE" {
