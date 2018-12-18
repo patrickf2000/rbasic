@@ -4,18 +4,18 @@
 rbasic is a BASIC dialect/interpreter. While rbasic is very similar to many other dialects of basic, it does have its own differences. The interpreter is written in Rust (hence the name).
 
 ### Supported Commands
-REM					-> comments
-PRINTLN				-> Print to the console (with a new line)
-PRINT				-> Print to the console (no newline)
-INPUT				-> Get console input and save to a variable (eg, INPUT x)
-LET					-> Create a variable and assign a value to it
-GOSUB				-> Go to a function and return to the calling function
-GOTO				-> Go to a function but do not return from it
-RETURN				-> Return a value from a function
-EXIT				-> Exit the program
-DO...WHILE			-> A do-while loop
-IF...ELIF...ELSE	-> Conditional statements
-MEMSET				-> Set a variable from memory
+REM					-> comments   
+PRINTLN				-> Print to the console (with a new line)   
+PRINT				-> Print to the console (no newline)   
+INPUT				-> Get console input and save to a variable (eg, INPUT x)   
+LET					-> Create a variable and assign a value to it   
+GOSUB				-> Go to a function and return to the calling function   
+GOTO				-> Go to a function but do not return from it   
+RETURN				-> Return a value from a function   
+EXIT				-> Exit the program   
+DO...WHILE			-> A do-while loop   
+IF...ELIF...ELSE	-> Conditional statements   
+MEMSET				-> Set a variable from memory   
 
 Note that commands are NOT case-sensitive. PRINT, print, and Print are all valid.
 
@@ -85,7 +85,7 @@ println result
 
 ### Operators
 The following mathematical operators are supported:   
-* +		-> Addition   
+* \+	-> Addition   
 * \-	-> Subtraction   
 * *		-> Multiplication   
 * /		-> Division   
