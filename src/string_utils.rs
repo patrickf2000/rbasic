@@ -33,14 +33,22 @@ pub fn get_second(line:&String) -> String {
 	ret
 }
 
+//Returns a label name (no arguments)
 pub fn lbl_name(name:&String) -> String {
 	let mut ret = String::new();
+	let mut in_args = false;
 	
 	for c in name.chars() {
 		if c == ':' {
 			break;
+		} else if c == '[' {
+			in_args = true;
+		} else if c == ']' {
+			in_args = false;
 		} else {
-			ret.push(c);
+			if !in_args {
+				ret.push(c);
+			}
 		}
 	}
 	

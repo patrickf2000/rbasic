@@ -24,6 +24,15 @@ pub fn clone_var(var:&Var) -> Var {
 	v
 }
 
+//Merges two vectors of variables
+pub fn merge_vars(src:Vec<Var>, mut dest:Vec<Var>) -> Vec<Var> {
+	for v in src.iter() {
+		dest.push(v.clone());
+	}
+
+	dest.clone()
+}
+
 //Returns a variable name from a string
 pub fn var_name(line:&String) -> String {
 	let mut ret = String::new();

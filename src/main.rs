@@ -12,6 +12,7 @@ mod utils;
 mod loop_utils;
 mod conditional;
 mod interpreter;
+mod lbl_utils;
 
 //Our main function
 fn main() {
@@ -82,6 +83,7 @@ fn file_mode(args:Vec<String>) {
     let mut main_lbl = interpreter::Lbl {
     	name: "".to_string(),
     	contents: Vec::new(),
+    	args: Vec::new(),
     };
     
     for lbl in labels.iter() {

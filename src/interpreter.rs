@@ -2,14 +2,17 @@ use std::process;
 use super::string_utils;
 use super::io_cmd;
 use super::vars;
+use super::vars::Var;
 use super::loop_utils;
 use super::conditional;
 use super::utils;
+use super::lbl_utils;
 
 #[derive(Clone)]
 pub struct Lbl {
 	pub name:String,
 	pub contents:Vec<String>,
+	pub args:Vec<Var>,
 }
 
 //This is sent and returned from each label as it runs
@@ -74,8 +77,10 @@ pub fn cache_labels(contents:Vec<String>) -> Vec<Lbl> {
 	let mut current = Lbl {
 		name: "".to_string(),
 		contents: Vec::new(),
+		args: Vec::new(),
 	};
 
+	//Load all contents into the labels
 	for ln in contents {
 		let lc:char = ln.chars().last().unwrap();
 		
@@ -89,7 +94,8 @@ pub fn cache_labels(contents:Vec<String>) -> Vec<Lbl> {
 			current = Lbl {
 				name: string_utils::lbl_name(&ln),
 				contents: Vec::new(),
-			}
+				args: lbl_utils::build_args(&ln),
+			};
 		} else {
 			current.contents.push(ln.clone());
 		}
@@ -102,13 +108,16 @@ pub fn cache_labels(contents:Vec<String>) -> Vec<Lbl> {
 
 //Returns a particular label from a vector
 pub fn find_label(labels:Vec<Lbl>, name:String) -> Lbl {
+	let lbl_name = string_utils::lbl_name(&name);
+
 	let mut lbl = Lbl {
 		name: "".to_string(),
 		contents: Vec::new(),
+		args: Vec::new(),
 	};
 	
 	for l in labels.iter() {
-		if name == l.name {
+		if lbl_name == l.name {
 			lbl = l.clone();
 		}
 	}
@@ -176,9 +185,12 @@ pub fn run(line:String, mut data:RunData) -> RunData {
 			return data;
 		}
 		
-		let lbl = find_label(data.labels.clone(), second);
 		let mut sub_data = build_data();
 		sub_data.labels = data.labels.clone();
+		
+		let mut lbl = find_label(data.labels.clone(), second.clone());
+		lbl.args = lbl_utils::assign_args(lbl.clone(), &second, &data.vars);
+		sub_data.vars = vars::merge_vars(lbl.args.clone(), sub_data.vars.clone());
 		
 		for ln in lbl.contents.iter() {
 			sub_data = run(ln.clone() ,sub_data.clone());
@@ -201,7 +213,10 @@ pub fn run(line:String, mut data:RunData) -> RunData {
 	
 		let mut sub_data = build_data();
 		sub_data.labels = data.labels.clone();
-		let lbl = find_label(data.labels.clone(), second);
+		
+		let mut lbl = find_label(data.labels.clone(), second.clone());
+		lbl.args = lbl_utils::assign_args(lbl.clone(), &second, &data.vars);
+		sub_data.vars = vars::merge_vars(lbl.args.clone(), sub_data.vars.clone());
 		
 		for ln in lbl.contents.iter() {
 			sub_data = run(ln.clone() ,sub_data.clone());
