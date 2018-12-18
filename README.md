@@ -29,9 +29,9 @@ println x	-> Correct
 println $x	-> Incorrect   
 
 Datatypes:
-* #	-> Integers   
-* .	-> Decimal numbers   
-* $	-> Strings   
+* \#	-> Integers   
+* .		-> Decimal numbers   
+* $		-> Strings   
 
 ### Functions
 To define a function, do something simply give it a name, specify any arguments, and end with a colon:   
@@ -87,7 +87,7 @@ println result
 The following mathematical operators are supported:   
 * \+	-> Addition   
 * \-	-> Subtraction   
-* *		-> Multiplication   
+* \*	-> Multiplication   
 * /		-> Division   
 * %		-> Modulus   
 
