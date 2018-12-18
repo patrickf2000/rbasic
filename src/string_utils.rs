@@ -66,3 +66,15 @@ pub fn rm_quotes(line:&String) -> String {
 		
 	ret
 }
+
+pub fn get_cmd(line:&String) -> String {
+	let mut ret = String::new();
+	
+	for c in line.chars() {
+		if c != '(' && c != ')' {
+			ret.push(c);
+		}
+	}
+	
+	ret
+}

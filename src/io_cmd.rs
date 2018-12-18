@@ -5,17 +5,24 @@ use std::io::Write;
 
 use super::vars;
 use super::string_utils;
+use super::interpreter;
+use super::interpreter::RunData;
+use super::utils;
 
 //The PRINTLN command
-pub fn print(line:String, vars:Vec<vars::Var>, nl:bool) {
+pub fn print(line:String, mut data:RunData, nl:bool) -> RunData {
 	let fc = line.chars().nth(0).unwrap();
 	let lc = line.chars().last().unwrap();
 	let mut to_print = String::new();
 	
-	if fc == '"' && lc == '"' {		//We have hardcoded text to print
+	if fc == '"' && lc == '"' {					//We have hardcoded text to print
 		to_print = string_utils::rm_quotes(&line);
-	} else {						//We have a variable to print
-		for v in vars.iter() {
+	} else if utils::is_cmd(line.clone()) {		//We have a command/return
+		let cmd = string_utils::get_cmd(&line);
+		data = interpreter::run(cmd,data.clone());
+		to_print = data.memory.clone();
+	} else {									//We have a variable to print
+		for v in data.vars.iter() {
 			if v.name == line {
 				if v.data_type == "str" {
 					to_print = string_utils::rm_quotes(&v.value);
@@ -34,6 +41,7 @@ pub fn print(line:String, vars:Vec<vars::Var>, nl:bool) {
 	}
 	
 	io::stdout().flush().unwrap();
+	data.clone()
 }
 
 //The INPUT command

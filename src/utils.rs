@@ -107,3 +107,14 @@ pub fn handle_return(line:String, mut data:RunData) -> RunData {
 	data.clone()
 }
 
+//Checks to see if a string is a function call
+pub fn is_cmd(line:String) -> bool {
+	let fc:char = line.chars().nth(0).unwrap();
+	let lc:char = line.chars().last().unwrap();
+	
+	if fc == '(' || lc == ')' {
+		return true;
+	}
+	
+	false
+}
