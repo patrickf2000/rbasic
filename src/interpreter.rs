@@ -28,6 +28,7 @@ pub struct RunData {
 	pub in_loop: bool,
 	pub loop_bd: Vec<String>,
 	pub lp_layer: i32,
+	pub break_req: bool,
 	
 	//Data for conditional statements
 	pub last_was_if: bool,
@@ -47,6 +48,7 @@ pub fn build_data() -> RunData {
 		in_loop: false,
 		loop_bd: Vec::new(),
 		lp_layer: 0,
+		break_req: false,
 		last_was_if: false,
 		if_solved: false,
 		memory: String::new(),
@@ -176,6 +178,10 @@ pub fn run(line:String, mut data:RunData) -> RunData {
 	} else if first == "LET" {
 		let var = vars::create_var(second.clone(), data.vars.clone(), &mut data);
 		data.vars.push(var);
+		
+	//The BREAK command
+	} else if first == "BREAK" {
+		data.break_req = true;
 		
 	//The GOSUB command
 	//This command executes another function and returns from it

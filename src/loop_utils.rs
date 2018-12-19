@@ -50,6 +50,10 @@ pub fn run_while_loop(second:String, mut data:RunData) -> RunData {
 			if vr < iv {
 				for ln in data.loop_bd.iter() {
 					sub_data = interpreter::run(ln.clone(), sub_data.clone());
+					if sub_data.break_req {
+						sub_data.break_req = false;
+						return sub_data;
+					}
 				}
 			} else {
 				break;
@@ -58,6 +62,10 @@ pub fn run_while_loop(second:String, mut data:RunData) -> RunData {
 			if vr > iv {
 				for ln in data.loop_bd.iter() {
 					sub_data = interpreter::run(ln.clone(), sub_data.clone());
+					if sub_data.break_req {
+						sub_data.break_req = false;
+						return sub_data;
+					}
 				}
 			} else {
 				break;
@@ -66,6 +74,10 @@ pub fn run_while_loop(second:String, mut data:RunData) -> RunData {
 			if vr == iv {
 				for ln in data.loop_bd.iter() {
 					sub_data = interpreter::run(ln.clone(), sub_data.clone());
+					if sub_data.break_req {
+						sub_data.break_req = false;
+						return sub_data;
+					}
 				}
 			} else {
 				break;
@@ -74,6 +86,10 @@ pub fn run_while_loop(second:String, mut data:RunData) -> RunData {
 			if vr != iv {
 				for ln in data.loop_bd.iter() {
 					sub_data = interpreter::run(ln.clone(), sub_data.clone());
+					if sub_data.break_req {
+						sub_data.break_req = false;
+						return sub_data;
+					}
 				}
 			} else {
 				break;
