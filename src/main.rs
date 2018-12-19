@@ -13,6 +13,7 @@ mod loop_utils;
 mod conditional;
 mod interpreter;
 mod lbl_utils;
+mod string_cmd;
 
 //Our main function
 fn main() {
