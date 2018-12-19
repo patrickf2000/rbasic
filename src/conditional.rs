@@ -136,7 +136,10 @@ pub fn compare_strings(str1:&String, str2:&String, op:&String) -> bool {
 		process::exit(1);
 	}
 	
-	if str1 == str2 {
+	let s1 = string_utils::rm_quotes(&str1);
+	let s2 = string_utils::rm_quotes(&str2);
+	
+	if s1 == s2 {
 		return true;
 	}
 	
