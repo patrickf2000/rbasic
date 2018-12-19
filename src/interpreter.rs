@@ -7,6 +7,7 @@ use super::loop_utils;
 use super::conditional;
 use super::utils;
 use super::lbl_utils;
+use super::string_cmd;
 
 #[derive(Clone)]
 pub struct Lbl {
@@ -182,6 +183,16 @@ pub fn run(line:String, mut data:RunData) -> RunData {
 	//The BREAK command
 	} else if first == "BREAK" {
 		data.break_req = true;
+		
+	//The LEN command
+	//Returns the length of a string
+	} else if first == "LEN" {
+		string_cmd::len(second.clone(), &mut data);
+		
+	//The CHAR command
+	//Returns the character at a particular index
+	} else if first == "CHAR" {
+		string_cmd::char_cmd(second.clone(), &mut data);
 		
 	//The GOSUB command
 	//This command executes another function and returns from it
