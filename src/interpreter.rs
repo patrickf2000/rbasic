@@ -170,6 +170,10 @@ pub fn run(line:String, mut data:RunData) -> RunData {
 	} else if first == "PRINT" {
 		data = io_cmd::print(second.clone(), data.clone(), false);
 		
+	//The CLS command
+	} else if first == "CLS" {
+		println!("\x1b[2J\x1b[1;1H");
+		
 	//The INPUT command
 	} else if first == "INPUT" {
 		data.vars = io_cmd::input(second.clone(), data.vars.clone(), &mut data);
@@ -193,6 +197,11 @@ pub fn run(line:String, mut data:RunData) -> RunData {
 	//Returns the character at a particular index
 	} else if first == "CHAR" {
 		string_cmd::char_cmd(second.clone(), &mut data);
+		
+	//The RAND command
+	//Generates a random number up to a certain max (Syntax: RAND 10)
+	} else if first == "RAND" {
+		utils::gen_random_int(second.clone(), &mut data);
 		
 	//The GOSUB command
 	//This command executes another function and returns from it

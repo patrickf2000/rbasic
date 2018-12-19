@@ -1,3 +1,7 @@
+extern crate rand;
+use rand::Rng;
+use std::process;
+
 use super::interpreter::RunData;
 
 #[derive(Clone)]
@@ -117,4 +121,27 @@ pub fn is_cmd(line:String) -> bool {
 	}
 	
 	false
+}
+
+//Generates a random number and saves it to memory
+pub fn gen_random_int(max:String, data:&mut RunData) {
+	let seed:i32;
+	let mut to_parse = max.clone();
+		
+	for v in data.vars.iter() {
+		if v.name == max {
+			to_parse = v.value.clone();
+		}
+	}
+		
+	match to_parse.parse::<i32>() {
+		Ok(n) => seed = n,
+		Err(_n) => {
+			println!("Error: Invalid integer specified as seed.");
+			process::exit(1);
+		},
+	}
+		
+	let num:i32 = rand::thread_rng().gen_range(0,seed+1);
+	data.memory = num.to_string();
 }
