@@ -148,15 +148,15 @@ pub fn run(line:String, mut data:RunData) -> RunData {
 	
 	//Make sure we are not in a loop
 	if data.in_loop {
-		if first == "DO" {
+		if first == "DO" || first == "LOOP" {
 			data.lp_layer += 1;
 			data.loop_bd.push(line.clone());
 			return data.clone();
-		} else if first == "WHILE" && data.lp_layer > 1 {
+		} else if (first == "WHILE" || first == "END") && data.lp_layer > 1 {
 			data.loop_bd.push(line.clone());
 			data.lp_layer -= 1;
 			return data.clone();
-		} else if first != "WHILE" {
+		} else if first != "WHILE" && first != "END" {
 			data.loop_bd.push(line.clone());
 			return data.clone();
 		}
@@ -272,13 +272,18 @@ pub fn run(line:String, mut data:RunData) -> RunData {
 		process::exit(0);
 		
 	//The DO command-> Starts a do-while loop
-	} else if first == "DO" {
+	//Also supports the LOOP command because the code is the same
+	} else if first == "DO" || first == "LOOP" {
 		data.in_loop = true;
 		data.lp_layer += 1;
 		
 	//The WHILE command-> Ends a do-while loop
 	} else if first == "WHILE" {
 		data = loop_utils::run_while_loop(second.clone(), data.clone());
+
+	//The END command-> signals the end of a LOOP
+	} else if first == "END" {
+		data = loop_utils::run_loop(data.clone());
 		
 	//The IF command-> First part of a conditional
 	} else if first == "IF" {

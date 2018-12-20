@@ -3,6 +3,7 @@ use super::interpreter;
 use super::interpreter::RunData;
 use super::utils;
 
+//The code for a while loop
 pub fn run_while_loop(second:String, mut data:RunData) -> RunData {
 	data.in_loop = false;
 		
@@ -102,4 +103,28 @@ pub fn run_while_loop(second:String, mut data:RunData) -> RunData {
 	}
 		
 	sub_data
+}
+
+//The code for the LOOP command
+pub fn run_loop(mut data:RunData) -> RunData {
+	data.in_loop = false;
+
+	let mut sub_data = interpreter::build_data();
+	sub_data.labels = data.labels.clone();
+	sub_data.vars = data.vars.clone();
+
+	loop {
+		for ln in data.loop_bd.iter() {
+			sub_data = interpreter::run(ln.clone(), sub_data.clone());
+			if sub_data.break_req {
+				break;
+			}
+		}
+
+		if sub_data.break_req {
+			break;
+		}
+	}
+
+	data.clone()
 }
