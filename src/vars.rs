@@ -89,6 +89,11 @@ pub fn expand_def(value:String, data_type:String, vars:Vec<Var>) -> String {
 		return ret;
 	}
 	
+	//If the string value is an operator, return
+	if found && data_type == "str" && value.len() == 1 {
+		return ret;
+	}
+	
 	//If an operator was found, use the rest of the function to expand it
 	
 	//First, see if we either parts reference another variable
