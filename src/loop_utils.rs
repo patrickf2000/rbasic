@@ -2,6 +2,7 @@ use std::process;
 use super::interpreter;
 use super::interpreter::RunData;
 use super::utils;
+use super::vars::Var;
 
 //The code for a while loop
 pub fn run_while_loop(second:String, mut data:RunData) -> RunData {
@@ -16,6 +17,8 @@ pub fn run_while_loop(second:String, mut data:RunData) -> RunData {
 	sub_data.labels = data.labels.clone();
 	sub_data.vars = data.vars.clone();
 		
+	let mut last_vars:Vec<Var> = sub_data.vars.clone();
+
 	loop {
 		let mut vr = 0;
 		let mut iv;
@@ -100,6 +103,20 @@ pub fn run_while_loop(second:String, mut data:RunData) -> RunData {
 			println!("Unknown operator: {}",op);
 			process::exit(1);
 		}
+
+		//Remove any vars within the scope of the do-while
+		let mut new_vars:Vec<Var> = Vec::new();
+
+		for v1 in sub_data.vars.iter() {
+			for v2 in last_vars.iter() {
+				if v1.name == v2.name {
+					new_vars.push(v1.clone());
+				}
+			}
+		}
+
+		sub_data.vars = new_vars;
+		last_vars = sub_data.vars.clone();
 	}
 		
 	sub_data
