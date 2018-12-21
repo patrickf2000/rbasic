@@ -204,7 +204,14 @@ pub fn run(line:String, mut data:RunData) -> RunData {
 	//The LEN command
 	//Returns the length of a string
 	} else if first == "LEN" {
-		string_cmd::len(second.clone(), &mut data);
+		let mut found = string_cmd::len(second.clone(), &mut data);
+		if !found {
+			found = arrays::len(second.clone(), &mut data);
+			if !found {
+				println!("Error: Cannot find length of unknown string, variable, or array.");
+				process::exit(1);
+			}
+		}
 		
 	//The CHAR command
 	//Returns the character at a particular index

@@ -4,18 +4,21 @@ use super::interpreter::RunData;
 use super::string_utils;
 
 //The code for the LEN command
-pub fn len(second:String, data:&mut RunData) {
+pub fn len(second:String, data:&mut RunData) -> bool {
+	let mut found = false;
 	let fc:char = second.chars().nth(0).unwrap();
 	let lc:char = second.chars().last().unwrap();
 	let mut string = String::new();
 	
-	if fc == lc {
+	if (fc == '\"') && (fc == lc) {
 		string = string_utils::rm_quotes(&second);
+		found = true;
 	} else {
 		for v in data.vars.iter() {
 			if v.name == second {
 				if v.data_type == "str" {
 					string = v.value.clone();
+					found = true;
 				} else {
 					println!("Error: LEN is only valid with strings or string variables.");
 					process::exit(1);
@@ -28,6 +31,8 @@ pub fn len(second:String, data:&mut RunData) {
 	
 	let len = string.len();
 	data.memory = len.to_string();
+
+	found
 }
 
 //The code for the CHAR command

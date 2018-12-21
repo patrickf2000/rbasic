@@ -110,3 +110,19 @@ pub fn push(line:&String, data:&mut RunData) {
 
     data.arrays = arrays;
 }
+
+//Returns the length of an array
+pub fn len(line:String, data:&mut RunData) -> bool {
+    let mut found = false;
+
+    for arr in data.arrays.iter() {
+        if arr.name == line {
+            let len = arr.value.len();
+            data.memory = len.to_string();
+            found = true;
+            break;
+        }
+    }
+
+    found
+}
