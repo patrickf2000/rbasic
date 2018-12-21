@@ -16,4 +16,9 @@ MAIN:
 
     println "Final result:"
     println responses
+    
+    ln
+    println "Press any key to continue..."
+    input
+
     exit

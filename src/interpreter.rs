@@ -173,7 +173,11 @@ pub fn run(line:String, mut data:RunData) -> RunData {
 	//The PRINT command
 	} else if first == "PRINT" {
 		data = io_cmd::print(second.clone(), data.clone(), false);
-		
+
+	//The LN command-> simply prints a new line
+	} else if first == "LN" {
+		println!("");
+
 	//The CLS command
 	} else if first == "CLS" {
 		println!("\x1b[2J\x1b[1;1H");
