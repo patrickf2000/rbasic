@@ -16,6 +16,7 @@ pub fn run_while_loop(second:String, mut data:RunData) -> RunData {
 	let mut sub_data = interpreter::build_data();
 	sub_data.labels = data.labels.clone();
 	sub_data.vars = data.vars.clone();
+	sub_data.arrays = data.arrays.clone();
 		
 	let mut last_vars:Vec<Var> = sub_data.vars.clone();
 

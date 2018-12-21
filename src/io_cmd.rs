@@ -21,13 +21,33 @@ pub fn print(line:String, mut data:RunData, nl:bool) -> RunData {
 		let cmd = string_utils::get_cmd(&line);
 		data = interpreter::run(cmd,data.clone());
 		to_print = data.memory.clone();
-	} else {									//We have a variable to print
+	} else {
+		let mut found_var = false;				
+
+		//See if we have a variable to print
 		for v in data.vars.iter() {
 			if v.name == line {
 				if v.data_type == "str" {
 					to_print = string_utils::rm_quotes(&v.value);
 				} else {
 					to_print = v.value.clone();
+				}
+				found_var = true;
+			}
+		}
+
+		//If not, check for arrays
+		if !found_var {
+			for arr in data.arrays.iter() {
+				if arr.name == line {
+					for item in arr.value.iter() {
+						if arr.data_type == "str" {
+							to_print += &string_utils::rm_quotes(&item);
+						} else {
+							to_print += &item.clone();
+						}
+						to_print += ",";
+					}
 				}
 			}
 		}

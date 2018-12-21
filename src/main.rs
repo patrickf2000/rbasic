@@ -14,6 +14,7 @@ mod conditional;
 mod interpreter;
 mod lbl_utils;
 mod string_cmd;
+mod arrays;
 
 //Our main function
 fn main() {

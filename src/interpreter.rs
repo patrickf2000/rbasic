@@ -8,6 +8,8 @@ use super::conditional;
 use super::utils;
 use super::lbl_utils;
 use super::string_cmd;
+use super::arrays;
+use super::arrays::Array;
 
 #[derive(Clone)]
 pub struct Lbl {
@@ -23,6 +25,7 @@ pub struct RunData {
 	pub code: i32,
 	pub labels: Vec<Lbl>,
 	pub vars: Vec<vars::Var>,
+	pub arrays: Vec<Array>,
 	pub shell_mode: bool,
 	
 	//Loop data
@@ -45,6 +48,7 @@ pub fn build_data() -> RunData {
 		code: 0,
 		labels: Vec::new(),
 		vars: Vec::new(),
+		arrays: Vec::new(),
 		shell_mode: false,
 		in_loop: false,
 		loop_bd: Vec::new(),
@@ -183,6 +187,11 @@ pub fn run(line:String, mut data:RunData) -> RunData {
 	} else if first == "LET" {
 		let var = vars::create_var(second.clone(), data.vars.clone(), &mut data);
 		data.vars.push(var);
+
+	//The ARRAY command
+	//Defines arrays
+	} else if first == "ARRAY" {
+		arrays::create_array(&second, &mut data);
 		
 	//The BREAK command
 	} else if first == "BREAK" {
@@ -265,7 +274,11 @@ pub fn run(line:String, mut data:RunData) -> RunData {
 	//The MEMSET command
 	} else if first == "MEMSET" {
 		data.vars = vars::def_var(second.clone(), data.memory.clone(), data.vars.clone(), &mut data);
-		
+
+	//The PUSH command
+	} else if first == "PUSH" {
+		arrays::push(&second, &mut data);
+
 	//The EXIT command
 	//This simply exits the program
 	} else if first == "EXIT" {
