@@ -16,4 +16,12 @@ MAIN:
     print len
     ln
 
+	println "The elements are:"
+	#count = 0
+	
+	do
+		println (item count in numbers)
+		#count = count + 1
+	while count < len
+
     exit

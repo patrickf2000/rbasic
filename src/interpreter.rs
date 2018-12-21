@@ -218,6 +218,11 @@ pub fn run(line:String, mut data:RunData) -> RunData {
 	} else if first == "CHAR" {
 		string_cmd::char_cmd(second.clone(), &mut data);
 		
+	//The ITEM command
+	//Returns the item at a particular index
+	} else if first == "ITEM" {
+		arrays::item(second.clone(), &mut data);
+		
 	//The RAND command
 	//Generates a random number up to a certain max (Syntax: RAND 10)
 	} else if first == "RAND" {

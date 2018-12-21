@@ -126,3 +126,57 @@ pub fn len(line:String, data:&mut RunData) -> bool {
 
     found
 }
+
+//Returns an item in an array
+pub fn item(line:String, data:&mut RunData) {
+	//Break down the string
+	let mut index_str = string_utils::get_first(&line);
+    let part2 = string_utils::get_second(&line);
+    let middle = string_utils::get_first(&part2);
+    let arr_name = string_utils::get_second(&part2);
+    
+    //Check the middle token
+    if middle != "in" {
+    	println!("Error: Invalid syntax for the ITEM command");
+    	process::exit(1);
+    }
+    
+    //Find the array we are looking for
+    let mut array = Array {
+    	name: "".to_string(),
+    	value: Vec::new(),
+    	data_type: "".to_string(),
+	};
+	
+	for arr in data.arrays.iter() {
+		if arr.name == arr_name {
+			array = arr.clone();
+		}
+	}
+	
+	//Check to see if the desired index is a variable
+	for v in data.vars.iter() {
+		if v.name == index_str {
+			if v.data_type == "int" {
+				index_str = v.value.clone();
+			} else {
+				println!("Error: Indexes in arrays can only be accessed by integers.");
+				process::exit(1);
+			}
+		}
+	}
+	
+	//Convert the index string to an integer
+	let index:usize;
+	
+	match index_str.parse::<usize>() {
+		Ok(n) => index = n,
+		Err(_n) => {
+			println!("Error: Invalid integer.");
+			process::exit(0); },
+	}
+	
+	//Get the item and set it to memory
+	let item = array.value.iter().nth(index).unwrap();
+	data.memory = item.to_string();
+}
